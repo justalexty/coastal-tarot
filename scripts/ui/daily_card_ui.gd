@@ -32,12 +32,8 @@ func _ready():
 	skip_button.pressed.connect(_on_skip_pressed)
 	continue_button.pressed.connect(_on_continue_pressed)
 	
-	# Check energy for skip option
-	if GameState.energy < 20:
-		skip_button.visible = true
-		skip_button.text = "Too tired... skip today"
-	else:
-		skip_button.visible = false
+	# No skip option - daily card is part of the ritual
+	skip_button.visible = false
 	
 	# Morning greeting
 	_show_morning_greeting()
@@ -56,18 +52,11 @@ func _show_morning_greeting():
 	if date_info.holiday != "":
 		greeting += "\n✨ " + date_info.holiday + " ✨"
 	
-	# Add energy state
-	greeting += "\n\nEnergy: " + str(GameState.energy) + "/" + str(GameState.max_energy)
+	# Add energy state (should be refreshed from sleep)
+	greeting += "\n\nEnergy: " + str(GameState.max_energy) + "/" + str(GameState.max_energy)
 	
-	# Set mood based on energy
-	if GameState.energy > 80:
-		mood_label.text = "Feeling energized!"
-	elif GameState.energy > 50:
-		mood_label.text = "Feeling good"
-	elif GameState.energy > 20:
-		mood_label.text = "A bit tired"
-	else:
-		mood_label.text = "Exhausted..."
+	# Morning mood after rest
+	mood_label.text = "Well rested and ready for the day!"
 	
 	interpretation_box.text = greeting + "\n\nDraw your daily card for guidance?"
 
@@ -185,9 +174,9 @@ func _display_daily_effects():
 				effect_label.text = "💕 Rapport +" + str(int(value * 100)) + "%"
 				effect_label.modulate = Color(1, 0.7, 0.8)
 			
-			"chaos":
-				effect_label.text = "🌪️ Expect the unexpected!"
-				effect_label.modulate = Color(1, 0.5, 0.5)
+			"breakthrough":
+				effect_label.text = "💡 Breakthrough insights today!"
+				effect_label.modulate = Color(1, 1, 0.5)
 			
 			"transformation":
 				effect_label.text = "🦋 Transformation energy"
@@ -197,12 +186,8 @@ func _display_daily_effects():
 			effects_list.add_child(effect_label)
 
 func _on_skip_pressed():
-	# Penalty for skipping
-	CompactMirror.add_message("Morning", "You're too tired for a daily draw. Maybe get some rest?")
-	GameState.skipped_daily_draw = true
-	
-	# Still start the day
-	_on_continue_pressed()
+	# No skip allowed - daily card is essential
+	pass
 
 func _on_continue_pressed():
 	# Transition to main game

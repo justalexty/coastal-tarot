@@ -7,12 +7,12 @@ Each new day in Coastal Witch Tarot begins with a personal tarot reading - the D
 ## How It Works
 
 ### Morning Ritual Flow
-1. Player wakes up to the Daily Card scene
-2. Shows current date, moon phase, and energy level
-3. Player can **Draw Card** or **Skip** (if exhausted)
+1. Player wakes up refreshed to the Daily Card scene
+2. Shows current date, moon phase, and full energy
+3. Player draws their daily card (mandatory ritual)
 4. Card animates with shuffle and flip effect
-5. Personal interpretation and effects are displayed
-6. Player continues to start their day
+5. Personal interpretation and guidance are displayed
+6. Player continues to start their day with new insights
 
 ### Card Effects System
 
@@ -20,13 +20,13 @@ Each card provides different effects that last the entire day:
 
 #### Major Arcana Examples
 - **The Fool**: +10 Energy, +15% Luck, Adventurous mood
-- **The Tower**: -15 Energy, Chaos effect, Unsettled mood
+- **The Tower**: Breakthrough insights, +20% Clarity, Transformative mood
 - **The Sun**: +20 Energy, +15% Tips, Joyful mood
 - **Death**: Transformation effect, +20% New clients
 
 #### Minor Arcana Examples
 - **Ace of Cups**: +10% New clients, +10% Rapport
-- **Nine of Swords**: -10 Energy, +20% Anxiety, Worried mood
+- **Nine of Swords**: +20% Awareness, +15% Insight, Alert mood
 - **Ace of Pentacles**: +25% Tips, +10% New clients
 
 ### Effect Types
@@ -40,16 +40,10 @@ Each card provides different effects that last the entire day:
 - ⚡ **Energy**: More/less starting energy
 
 **Special Effects:**
-- 🌪️ **Chaos**: Expect unexpected events
-- 🦋 **Transformation**: Major changes today
-- ⚖️ **Karma**: Actions have stronger consequences
-
-### Skip Penalty
-
-If energy < 20, players can skip the daily draw but:
-- No bonuses for the day
-- Slightly negative mood
-- Marked as "skipped" in journal
+- 💡 **Breakthrough**: New insights and clarity
+- 🦋 **Transformation**: Major positive changes
+- ⚖️ **Balance**: Harmony in all interactions
+- 🔮 **Awareness**: Heightened perception
 
 ### Journal System
 

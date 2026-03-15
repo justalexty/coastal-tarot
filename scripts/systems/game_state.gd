@@ -131,6 +131,9 @@ func advance_day():
 	else:
 		days_until_rent = date_info.get("days_until_rent", 30)
 	
+	# Sleep refreshes energy to full
+	energy = max_energy
+	
 	# Daily events
 	_trigger_daily_events()
 	

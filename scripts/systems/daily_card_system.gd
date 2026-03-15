@@ -17,19 +17,19 @@ var card_day_effects = {
 	"The Magician": {"accuracy": 0.10, "tips": 0.05, "mood": "confident"},
 	"The High Priestess": {"intuition": 0.20, "energy": 5, "mood": "mystical"},
 	"The Empress": {"tips": 0.15, "rapport": 0.10, "mood": "nurturing"},
-	"The Emperor": {"confidence": 0.15, "energy": -5, "mood": "authoritative"},
+	"The Emperor": {"confidence": 0.15, "structure": 0.10, "mood": "authoritative"},
 	"The Hierophant": {"accuracy": 0.05, "repeat_clients": 0.10, "mood": "traditional"},
 	"The Lovers": {"rapport": 0.20, "love_readings": 0.15, "mood": "romantic"},
 	"The Chariot": {"energy": 15, "confidence": 0.10, "mood": "determined"},
 	"Strength": {"energy": 10, "difficult_clients": 0.15, "mood": "patient"},
-	"The Hermit": {"intuition": 0.15, "energy": -10, "mood": "introspective"},
+	"The Hermit": {"intuition": 0.15, "wisdom": 0.10, "mood": "introspective"},
 	"Wheel of Fortune": {"luck": 0.25, "tips": 0.10, "mood": "optimistic"},
 	"Justice": {"accuracy": 0.15, "karma": true, "mood": "balanced"},
-	"The Hanged Man": {"intuition": 0.10, "energy": -5, "mood": "contemplative"},
+	"The Hanged Man": {"intuition": 0.10, "patience": 0.15, "mood": "contemplative"},
 	"Death": {"transformation": true, "new_clients": 0.20, "mood": "transformative"},
 	"Temperance": {"energy_regen": 0.20, "accuracy": 0.05, "mood": "peaceful"},
-	"The Devil": {"tips": 0.20, "energy": -10, "mood": "mischievous"},
-	"The Tower": {"chaos": true, "energy": -15, "mood": "unsettled"},
+	"The Devil": {"tips": 0.20, "awareness": 0.15, "mood": "mischievous"},
+	"The Tower": {"breakthrough": true, "clarity": 0.20, "mood": "transformative"},
 	"The Star": {"luck": 0.20, "energy": 10, "mood": "hopeful"},
 	"The Moon": {"intuition": 0.25, "confusion": 0.10, "mood": "dreamy"},
 	"The Sun": {"energy": 20, "tips": 0.15, "mood": "joyful"},
@@ -49,8 +49,8 @@ var card_day_effects = {
 	
 	"Ace of Swords": {"accuracy": 0.20, "clarity": true, "mood": "sharp"},
 	"Two of Swords": {"decision_paralysis": true, "mood": "indecisive"},
-	"Four of Swords": {"energy_regen": 0.30, "energy": -5, "mood": "restful"},
-	"Nine of Swords": {"anxiety": 0.20, "energy": -10, "mood": "worried"},
+	"Four of Swords": {"energy_regen": 0.30, "rest_quality": 0.20, "mood": "restful"},
+	"Nine of Swords": {"awareness": 0.20, "insight": 0.15, "mood": "alert"},
 	
 	"Ace of Pentacles": {"tips": 0.25, "new_clients": 0.10, "mood": "prosperous"},
 	"Four of Pentacles": {"tips": -0.10, "savings": 0.20, "mood": "conservative"},
@@ -143,7 +143,7 @@ func _get_personal_interpretation(card: Dictionary) -> String:
 	# Personal interpretations for daily draws
 	var personal_meanings = {
 		"The Fool": "Today is for new adventures. Don't overthink, just begin.",
-		"The Tower": "Change is coming whether you're ready or not. Stay flexible.",
+		"The Tower": "Old structures fall away to reveal truth. Breakthrough awaits!",
 		"The Sun": "Joy and success are yours today. Share your light!",
 		"Death": "Time to let something go. Make space for the new.",
 		"The Lovers": "Connections deepen today. Open your heart.",
@@ -173,5 +173,5 @@ func get_daily_card_scene_data() -> Dictionary:
 		"has_drawn": has_drawn_today,
 		"current_card": current_daily_card,
 		"effects": daily_effects,
-		"can_skip": GameState.energy < 20  # Can skip if too tired
+		"can_skip": false  # Daily card is part of the morning ritual
 	}
