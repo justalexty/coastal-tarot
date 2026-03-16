@@ -20,6 +20,8 @@ A cozy Ghibli-inspired game about a young witch building her tarot reading busin
 
 For the Ghibli aesthetic, I recommend **NOT** using LPC sprites. Here's why and what to use instead:
 
+**UPDATE**: Character customization system is now built and ready! It works with ANY sprite system - just drop in the assets. Currently using placeholder sprites for testing.
+
 #### Option 1: Seliel's Sprites (Recommended)
 - **Link**: https://seliel-the-shaper.itch.io/character-base
 - **Why**: More anime/Ghibli proportions, cleaner style

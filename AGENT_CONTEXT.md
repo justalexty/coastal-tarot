@@ -56,6 +56,14 @@ A broke witch trying to make $700 monthly rent by reading tarot cards in an expe
 - Calendar widget shows date/moon/rent countdown
 - Can run with `godot project.godot` and press F5
 
+### Character Customization System (NEW)
+- Full character customization system that works with ANY sprite pack
+- Compact mirror UI with live preview
+- Options: body type, skin tone, hair style/color, outfit
+- Using placeholder sprites (colored shapes) until real assets chosen
+- Ready for Seliel's sprites, LPC, or custom art
+- See `character_customization_guide.md` for implementation details
+
 ## Architecture Decisions
 
 ### Singletons (Autoload)
