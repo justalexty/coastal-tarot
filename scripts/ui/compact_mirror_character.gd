@@ -201,10 +201,18 @@ func _play_sparkle_effect():
 func _save_and_close():
 	customization_system.save_character_data()
 	
+	# Save to GameState too
+	GameState.player_character = customization_system.current_character
+	GameState.player_name = customization_system.current_character.name
+	GameState.player_pronouns = customization_system.current_character.pronouns.display
+	
 	# Mirror closing animation
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1, 0), 0.3)
-	tween.finished.connect(func(): self.visible = false)
+	tween.finished.connect(func(): 
+		# Continue to train station
+		get_tree().change_scene_to_file("res://scenes/locations/train_station.tscn")
+	)
 
 func _create_default_character():
 	# Set some defaults for new character

@@ -105,7 +105,8 @@ func _open_compact_mirror():
 
 func _go_to_character_creation():
 	# Now the character creation makes sense - you're looking in your compact!
-	get_tree().change_scene_to_file("res://scenes/compact_mirror/character_creation_fixed.tscn")
+	# Use the full customization scene with all options
+	get_tree().change_scene_to_file("res://scenes/compact_mirror/character_customization_full.tscn")
 
 func _animate_scenery():
 	# Subtle parallax effect on window scenery
