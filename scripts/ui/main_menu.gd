@@ -19,8 +19,11 @@ func _ready():
 		continue_button.disabled = false
 
 func _on_new_game_pressed():
-	# Start character creation
-	get_tree().change_scene_to_file("res://scenes/compact_mirror/character_creation.tscn")
+	# Skip character creation if it's broken, go straight to daily card
+	print("Starting new game...")
+	# get_tree().change_scene_to_file("res://scenes/compact_mirror/character_creation.tscn")
+	# Character creation is incomplete - skip to daily card
+	get_tree().change_scene_to_file("res://scenes/ui/daily_card_scene.tscn")
 
 func _on_continue_pressed():
 	# Load save and go to apartment
