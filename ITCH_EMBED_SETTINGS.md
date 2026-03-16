@@ -5,7 +5,13 @@
 ### 📐 **Viewport dimensions**
 - **Width**: 960
 - **Height**: 540
-- **Why**: Standard 16:9 aspect ratio, looks good on most screens
+- **Why**: Matches the game's actual resolution
+
+### 🛠️ **IMPORTANT: Fixing the tiny corner issue**
+If the game appears tiny in the corner:
+1. Make sure "Click to launch in fullscreen" is OFF
+2. Set embed to "Embed in page"
+3. Use these exact dimensions: 960×540
 
 ### ⚙️ **Frame options**
 - ✅ **Enable fullscreen button** - Essential for comfortable play

@@ -1,11 +1,11 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1773697909
+::res://::1773698928
 AGENT_CONTEXT.md::TextFile::-1::1773697744::0::1::::<><><>0<>0<><>::
 character_customization_guide.md::TextFile::-1::1773697719::0::1::::<><><>0<>0<><>::
 character_system_example.md::TextFile::-1::1773697909::0::1::::<><><>0<>0<><>::
 demo_instructions.md::TextFile::-1::1773588283::0::1::::<><><>0<>0<><>::
 DESIGN.md::TextFile::-1::1773584505::0::1::::<><><>0<>0<><>::
-export_presets.cfg::TextFile::-1::1773588608::0::1::::<><><>0<>0<><>::
+export_presets.cfg::TextFile::-1::1773698915::0::1::::<><><>0<>0<><>::
 GITHUB_TOKEN_SETUP.md::TextFile::-1::1773688852::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D::890356994167333207::1773687599::1773687606::1::::<><><>0<>0<>5bff6c821f1c6164f838e3f1bbfbe8c4<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 index.apple-touch-icon.png::CompressedTexture2D::6650937333401240715::1773690702::1773690693::1::::<><><>0<>0<>035effcb1539ede9c61adf683a720c66<>res://.godot/imported/index.apple-touch-icon.png-8085a11cc297d91deb55511843765958.ctex::
@@ -43,7 +43,7 @@ daily_card_system.md::TextFile::-1::1773587102::0::1::::<><><>0<>0<><>::
 ::res://scenes/compact_mirror/::1773697635
 character_creation.tscn::PackedScene::-1::1773584505::0::1::::<><><>0<>0<><>::res://scripts/systems/compact_mirror.gd<>res://assets/ui/compact_mirror_frame.png<>res://assets/ui/witch_theme.tres
 character_creation_fixed.tscn::PackedScene::-1::1773694162::0::1::::<><><>0<>0<><>::res://scripts/ui/character_creation_fixed.gd<>res://assets/ui/default_theme.tres
-character_customization_full.tscn::PackedScene::-1::1773697635::0::1::::<><><>0<>0<><>::res://scripts/ui/compact_mirror_character.gd<>res://assets/ui/default_theme.tres
+character_customization_full.tscn::PackedScene::-1::1773698960::0::1::::<><><>0<>0<><>::res://scripts/ui/compact_mirror_character.gd<>res://assets/ui/witch_theme.tres
 ::res://scenes/intro/::1773694103
 train_arrival.tscn::PackedScene::-1::1773694103::0::1::::<><><>0<>0<><>::res://scripts/scenes/train_arrival.gd<>res://assets/ui/default_theme.tres
 ::res://scenes/locations/::1773694235
@@ -64,7 +64,7 @@ demo_apartment.gd::GDScript::6845830135731663117::1773588201::0::1::::<>Node2D<>
 studio_apartment.gd::GDScript::859346100110695224::1773584505::0::1::::StudioApartment<>Node2D<><>0<>0<><>::
 train_arrival.gd::GDScript::1595967119611150215::1773697869::0::1::::<>Node2D<><>0<>0<><>::
 train_station.gd::GDScript::7701688026008614081::1773694251::0::1::::<>Node2D<><>0<>0<><>::
-::res://scripts/systems/::1773698486
+::res://scripts/systems/::1773698528
 audio_manager.gd::GDScript::3898508763680407134::1773687510::0::1::::<>Node<><>0<>0<><>::
 calendar_system.gd::GDScript::5840828551388853645::1773584505::0::1::::CalendarSystem<>Node<><>0<>0<><>::
 character_customization.gd::GDScript::98436644899255715::1773698505::0::1::::<>Node<><>0<>0<><>::
@@ -82,7 +82,7 @@ pronoun_manager.gd::GDScript::9146204861283950064::1773687455::0::1::::<>Node<><
 scene_manager.gd::GDScript::2147146587570962907::1773687455::0::1::::<>Node<><>0<>0<><>::
 simple_pixel_sprite_generator.gd::GDScript::889275791774802857::1773698486::0::1::::<>Node<><>0<>0<><>::
 tarot_deck.gd::GDScript::9082738695708383963::1773687455::0::1::::<>Node<><>0<>0<><>::
-::res://scripts/ui/::1773697582
+::res://scripts/ui/::1773698528
 calendar_display.gd::GDScript::8094542847457607054::1773584505::0::1::::CalendarDisplay<>PanelContainer<><>0<>0<><>::
 character_creation.gd::GDScript::1039073512872789763::1773690631::0::1::::<>Control<><>0<>0<><>::
 character_creation_fixed.gd::GDScript::4786305500112599902::1773694262::0::1::::<>Control<><>0<>0<><>::
@@ -94,7 +94,7 @@ financial_tracker.gd::GDScript::2312887101575553738::1773584505::0::1::::Financi
 listing_timer.gd::GDScript::2672218083648548260::1773584505::0::1::::<>PanelContainer<><>0<>0<><>::
 main_menu.gd::GDScript::5968703780670241323::1773694205::0::1::::<>Control<><>0<>0<><>::
 missed_broom_popup.gd::GDScript::5989271492640725739::1773584505::0::1::::<>AcceptDialog<><>0<>0<><>::
-::res://web_export/::1773694552
-index.apple-touch-icon.png::CompressedTexture2D::9045218545487841233::1773694552::1773694552::1::::<><><>0<>0<>329011f9af03b7efafe938be9799187e<>res://.godot/imported/index.apple-touch-icon.png-4d27ec496bd7ecf4584e814d5ed34e23.ctex::
-index.icon.png::CompressedTexture2D::1105782930441795749::1773694552::1773694552::1::::<><><>0<>0<>01fcb20133c8ea5538ba208829c33bb3<>res://.godot/imported/index.icon.png-df48615e124f35601a0d15938b6e60ae.ctex::
-index.png::CompressedTexture2D::2650183754329456684::1773694552::1773694552::1::::<><><>0<>0<>7602970b11aa6a79bf06564634b1e37d<>res://.godot/imported/index.png-3755de3ad034557d17ad1a4f6e0616c2.ctex::
+::res://web_export/::1773698528
+index.apple-touch-icon.png::CompressedTexture2D::9045218545487841233::1773698528::1773694552::1::::<><><>0<>0<>329011f9af03b7efafe938be9799187e<>res://.godot/imported/index.apple-touch-icon.png-4d27ec496bd7ecf4584e814d5ed34e23.ctex::
+index.icon.png::CompressedTexture2D::1105782930441795749::1773698528::1773694552::1::::<><><>0<>0<>01fcb20133c8ea5538ba208829c33bb3<>res://.godot/imported/index.icon.png-df48615e124f35601a0d15938b6e60ae.ctex::
+index.png::CompressedTexture2D::2650183754329456684::1773698528::1773694552::1::::<><><>0<>0<>7602970b11aa6a79bf06564634b1e37d<>res://.godot/imported/index.png-3755de3ad034557d17ad1a4f6e0616c2.ctex::
