@@ -1,62 +1,53 @@
-# 🎮 Your Game is Ready for itch.io!
+# 🎮 Upload Your Game to itch.io!
 
-## ✅ Export Complete!
+I've exported your game for web! Here's how to get it online:
 
-I've successfully exported your Coastal Witch Tarot game to web format. Here's what I created:
+## The Export
 
-- **Web Export Folder**: `web_export/` (all the game files)
-- **Upload-Ready ZIP**: `coastal-witch-tarot-web.zip` (9.2MB)
+✅ **Done!** Your game is exported and ready in: `coastal-tarot-web.zip`
 
-## 📤 Upload to itch.io (5 minutes):
+## Upload to itch.io (5 minutes)
 
 1. **Go to itch.io**
-   - Sign up/login at [itch.io](https://itch.io)
-   - Click "Dashboard" → "Create new project"
+   - Visit https://itch.io
+   - Click "Register" or "Log in"
 
-2. **Fill in Game Details**:
-   - **Title**: Coastal Witch Tarot
-   - **Project URL**: coastal-witch-tarot
-   - **Classification**: Game
-   - **Kind of project**: HTML
-   - **Pricing**: Up to you! (Free, Pay what you want, or Fixed price)
+2. **Create New Game**
+   - Click your username → "Dashboard"
+   - Click "Create new project"
 
-3. **Upload Your Game**:
+3. **Fill in Details**
+   - Title: `Coastal Tarot`
+   - Project URL: `coastal-tarot` (this becomes yourusername.itch.io/coastal-tarot)
+   - Classification: Game
+   - Kind of project: HTML
+   - Pricing: Up to you! ($0 for free, or "Pay what you want")
+
+4. **Upload the Game**
+   - Scroll to "Uploads"
    - Click "Upload files"
-   - Select `coastal-witch-tarot-web.zip`
-   - ✅ Check **"This file will be played in the browser"**
-   - Leave other settings as default
+   - Select `coastal-tarot-web.zip`
+   - **IMPORTANT**: Check ✅ "This file will be played in the browser"
+   - Leave display settings as default
 
-4. **Game Settings**:
-   - **Viewport dimensions**: 1280 x 720
-   - **Fullscreen button**: Enabled
-   - **Mobile friendly**: No (unless you've optimized for mobile)
-
-5. **Save & View**:
-   - Click "Save & view page"
+5. **Save & View**
+   - Scroll down and click "Save & view page"
    - Your game is now live!
 
-## 🌐 Your Game URL:
-`https://yourusername.itch.io/coastal-witch-tarot`
+## Test It
 
-## 🎯 What Players Will Experience:
-- Click play button in browser
-- Game loads directly (no downloads!)
-- Works on Chrome, Firefox, Safari, Edge
-- Players can go fullscreen
+Visit your game page and click "Run game" - it should load right in the browser!
 
-## 💡 Pro Tips:
-- Add screenshots to your game page
-- Write a nice description mentioning it's a demo
-- Set visibility to "Public" when ready
-- Share the link with testers!
+## Optional Enhancements
 
-## 🐛 Known Issues:
-- Some script errors exist but game should still be playable
-- Audio manager is a placeholder (no sounds yet)
-- Save system may not persist between sessions
+- Add screenshots (I can help capture these!)
+- Write a description about your cozy witch game
+- Add tags like: `tarot`, `cozy`, `witch`, `simulation`
+- Set a nice cover image
 
-## 📁 Files Location:
-- Web build: `/Users/lobster/.openclaw/workspace/coastal-tarot/web_export/`
-- ZIP file: `/Users/lobster/.openclaw/workspace/coastal-tarot/coastal-witch-tarot-web.zip`
+## File Location
 
-That's it! Your game is ready to share with the world! 🎉
+Your exported game is at:
+`/Users/lobster/.openclaw/workspace/coastal-tarot/coastal-tarot-web.zip`
+
+That's it! Your game will be playable by anyone with just a web browser! 🎉
