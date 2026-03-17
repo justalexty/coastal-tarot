@@ -563,7 +563,7 @@ const OPENING_LINES = [
   "You clutch your worn suitcase — everything you own fits inside it.",
   "Your old apprentice broom broke last week. The train was all you could afford.",
   "But you've got your tarot deck, your compact mirror, and $25 to your name.",
-  "You pull out your compact and...",
+  "You pull out your compact and take one last look before arriving...",
   "__OPEN_COMPACT__",
   "The conductor calls out: \"Seaglass Harbor! Last stop!\"",
   "You step onto the platform. The ocean breeze carries the scent of salt and possibility.",
