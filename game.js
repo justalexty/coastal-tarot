@@ -789,12 +789,12 @@ function startReading() {
             </div>
           </div>
           <div class="card-front">
-            <div class="card-element">${card.element || ''}</div>
+            <div class="card-number">${card.number !== undefined ? (card.number === 0 ? '0' : card.number) : ''}</div>
+            <div class="card-illustration" ${card.reversed ? 'style="transform:rotate(180deg)"' : ''}>
+              <div class="card-art-symbol">${getCardSymbol(card)}</div>
+            </div>
             <div class="card-name">${card.name}</div>
-            <div class="card-visual">${card.visual_description || ''}</div>
-            <div class="card-keywords">${(card.keywords || []).join(' • ')}</div>
             <div class="card-orientation ${card.reversed ? 'reversed' : 'upright'}">${card.reversed ? '↓ Reversed' : '↑ Upright'}</div>
-            <div class="card-meaning">${card.reversed ? card.reversed_meaning : card.upright_meaning}</div>
           </div>
         </div>
       </div>
@@ -815,16 +815,64 @@ function startReading() {
 }
 
 function revealCard(cardEl) {
-  if (cardEl.classList.contains('revealed')) return;
+  if (cardEl.classList.contains('revealed')) {
+    // Tapping a revealed card shows its interpretation
+    const idx = parseInt(cardEl.dataset.idx);
+    if (!isNaN(idx)) showInterpretation(idx);
+    return;
+  }
   cardEl.classList.add('revealed', 'flipping');
-  // Sparkle effects
   createSparkles(cardEl);
+  const idx = parseInt(cardEl.dataset.idx);
   revealedCount++;
+
+  // Show interpretation bubble after flip
+  setTimeout(() => {
+    if (!isNaN(idx)) showInterpretation(idx);
+  }, 800);
 
   if (revealedCount >= 3) {
     $('#reading-hint').style.display = 'none';
     $('#btn-finish-reading').style.display = 'inline-block';
   }
+}
+
+const SPREAD_LABELS = ['Past', 'Present', 'Future'];
+
+function showInterpretation(idx) {
+  const card = readingCards[idx];
+  if (!card) return;
+  const bubble = $('#interpretation-bubble');
+  bubble.innerHTML = `
+    <div class="interp-header">
+      <span class="interp-position">${SPREAD_LABELS[idx] || ''}</span>
+      <span class="interp-name">${card.name} ${card.reversed ? '(Reversed)' : ''}</span>
+      <button class="interp-close" onclick="this.closest('#interpretation-bubble').style.display='none'">✕</button>
+    </div>
+    <div class="interp-keywords">${(card.keywords || []).join(' · ')}</div>
+    <div class="interp-element">${card.element || ''}</div>
+    <div class="interp-meaning">${card.reversed ? card.reversed_meaning : card.upright_meaning}</div>
+    <div class="interp-visual">"${card.visual_description || ''}"</div>
+  `;
+  bubble.style.display = 'block';
+}
+
+function getCardSymbol(card) {
+  const symbols = {
+    'The Fool': '🌀', 'The Magician': '✨', 'The High Priestess': '🌙',
+    'The Empress': '🌿', 'The Emperor': '👑', 'The Hierophant': '🔑',
+    'The Lovers': '💕', 'The Chariot': '⚡', 'Strength': '🦁',
+    'The Hermit': '🏔️', 'Wheel of Fortune': '☸️', 'Justice': '⚖️',
+    'The Hanged Man': '🔮', 'Death': '🦋', 'Temperance': '🌊',
+    'The Devil': '🔥', 'The Tower': '⛈️', 'The Star': '⭐',
+    'The Moon': '🌑', 'The Sun': '☀️', 'Judgement': '🎺',
+    'The World': '🌍',
+  };
+  if (symbols[card.name]) return symbols[card.name];
+  // Minor arcana
+  const suitSymbols = { Wands: '🪄', Cups: '🏆', Swords: '⚔️', Pentacles: '💰' };
+  if (card.suit) return suitSymbols[card.suit] || '✦';
+  return '✦';
 }
 
 function createSparkles(cardEl) {
