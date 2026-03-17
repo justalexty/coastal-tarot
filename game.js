@@ -563,6 +563,8 @@ const OPENING_LINES = [
   "You clutch your worn suitcase — everything you own fits inside it.",
   "Your old apprentice broom broke last week. The train was all you could afford.",
   "But you've got your tarot deck, your compact mirror, and $25 to your name.",
+  "You pull out your compact mirror and take one last look before arriving...",
+  "__OPEN_COMPACT__",
   "The conductor calls out: \"Last stop!\"",
   "You step onto the platform. The ocean breeze carries the scent of salt and possibility.",
   "This is it. Your new life as a professional tarot reader starts now.",
@@ -579,20 +581,40 @@ function startOpening() {
   typeNextChar();
 }
 
+let openingPaused = false;
+
 function typeNextChar() {
   if (openingLine >= OPENING_LINES.length) {
-    // Opening complete
     state.openingComplete = true;
     saveGame();
     setTimeout(() => {
       showScreen('game');
       renderGame();
-      showToast('Welcome! Open your compact mirror to get started 🔮');
-      addMessage('WitchNet', 'Welcome! The Boardwalk is free to set up — no permit needed. Open your compact mirror to customize your look!');
+      showToast('Welcome! 🔮');
+      addMessage('WitchNet', 'Welcome! The Boardwalk is free to set up — no permit needed.');
     }, 500);
     return;
   }
   const line = OPENING_LINES[openingLine];
+  // Special: open compact mirror mid-opening
+  if (line === '__OPEN_COMPACT__') {
+    openingPaused = true;
+    showOverlay('compact');
+    syncStylingTab();
+    switchCompactTab('styling');
+    // Override close to resume opening
+    const closeBtn = $('#btn-close-compact');
+    const origClose = closeBtn.onclick;
+    closeBtn.onclick = () => {
+      hideOverlay('compact');
+      closeBtn.onclick = origClose;
+      openingPaused = false;
+      openingLine++;
+      openingCharIdx = 0;
+      typeNextChar();
+    };
+    return;
+  }
   if (openingCharIdx <= line.length) {
     $('#opening-text').textContent = line.substring(0, openingCharIdx);
     openingCharIdx++;
@@ -601,14 +623,14 @@ function typeNextChar() {
 }
 
 function advanceOpening() {
+  if (openingPaused) return;
   if (openingTimer) clearTimeout(openingTimer);
   const line = OPENING_LINES[openingLine];
+  if (line === '__OPEN_COMPACT__') { typeNextChar(); return; }
   if (openingCharIdx < line.length) {
-    // Show full line immediately
     openingCharIdx = line.length;
     $('#opening-text').textContent = line;
   } else {
-    // Move to next line
     openingLine++;
     openingCharIdx = 0;
     if (openingLine < OPENING_LINES.length) {
@@ -857,127 +879,64 @@ function showCompact() {
 // ============================================================
 // CHARACTER STYLING (in Compact Mirror)
 // ============================================================
-const SKIN_COLORS = {
-  pale: '#f5deb3', light: '#deb887', medium: '#c4956a',
-  tan: '#a0764a', dark: '#6b4226', deep: '#3b1e08'
-};
-const HAIR_COLORS_MAP = {
-  black: '#1a1a2e', brown: '#6b4226', blonde: '#d4a574', red: '#c0392b',
-  purple: '#8e44ad', blue: '#2980b9', green: '#27ae60', white: '#ecf0f1', pink: '#e84393'
-};
+// Seliel sprite system — 512x512 sheets, 64px frames, 8 per row
+// Naming: char_a_{bodyType}_0bas_humn_{skinV}.png, 1out_{outfit}_{outfitV}.png, 4har_{hair}_{hairV}.png, 5hat_{hat}_{hatV}.png
+const SPRITE_FRAME = 64;
+const SPRITE_PATH = 'assets/sprites/character/seliel/';
+const SKIN_VARIANT_MAP = { pale: 'v00', light: 'v02', medium: 'v04', tan: 'v06', dark: 'v08', deep: 'v10' };
+const HAIR_STYLE_MAP = { bob: 'bob1', dapper: 'dap1' };
+const HAIR_COLOR_MAP = { black: 'v00', brown: 'v03', blonde: 'v05', red: 'v07', purple: 'v09', blue: 'v11', green: 'v12', white: 'v13', pink: 'v10' };
+const OUTFIT_MAP_SPRITE = { traditional: 'fstr', modern_witch: 'pfpn', casual: 'fstr', traveler: 'fstr', punk_witch: 'boxr' };
+const OUTFIT_VARIANT_MAP = { traditional: 'v01', modern_witch: 'v01', casual: 'v03', traveler: 'v04', punk_witch: 'v01' };
+const HAT_MAP = { hat: 'pfht', pointy: 'pnty' };
+const BODY_PREFIX = { feminine: 'p1', androgynous: 'p1', masculine: 'pONE1' };
 
-function drawCharPreview() {
+const spriteCache = {};
+function loadSprite(src) {
+  if (spriteCache[src]) return Promise.resolve(spriteCache[src]);
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => { spriteCache[src] = img; resolve(img); };
+    img.onerror = () => reject(new Error('Failed: ' + src));
+    img.src = src;
+  });
+}
+
+async function drawCharPreview() {
   const canvas = $('#char-preview');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const w = canvas.width, h = canvas.height;
-  ctx.clearRect(0, 0, w, h);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.imageSmoothingEnabled = false;
 
-  const skin = SKIN_COLORS[state.skinTone || 'pale'];
-  const hair = HAIR_COLORS_MAP[state.hairColor || 'black'];
-  const cx = w / 2, bodyTop = 45;
+  const bp = BODY_PREFIX[state.bodyType || 'feminine'] || 'p1';
+  const skinV = SKIN_VARIANT_MAP[state.skinTone || 'pale'] || 'v00';
+  const outfitCode = OUTFIT_MAP_SPRITE[state.outfit || 'traditional'] || 'fstr';
+  const outfitV = OUTFIT_VARIANT_MAP[state.outfit || 'traditional'] || 'v01';
+  const hairCode = (state.hairStyle || 'bob').includes('bob') || (state.hairStyle || '').includes('short') ? 'bob1' : 'dap1';
+  const hairV = HAIR_COLOR_MAP[state.hairColor || 'black'] || 'v00';
 
-  // Body
-  ctx.fillStyle = skin;
-  ctx.beginPath();
-  ctx.ellipse(cx, bodyTop + 30, 16, 22, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Outfit
-  const outfitColors = {
-    traditional: '#2d1b4e', modern_witch: '#1a1a2e', casual: '#5a7a8a',
-    traveler: '#8a6a3a', punk_witch: '#2a2a2a'
-  };
-  ctx.fillStyle = outfitColors[state.outfit || 'traditional'] || '#2d1b4e';
-  ctx.beginPath();
-  ctx.ellipse(cx, bodyTop + 35, 18, 28, 0, 0.2, Math.PI - 0.2);
-  ctx.fill();
-  // Skirt/legs
-  ctx.beginPath();
-  ctx.moveTo(cx - 18, bodyTop + 55);
-  ctx.lineTo(cx - 22, bodyTop + 80);
-  ctx.lineTo(cx + 22, bodyTop + 80);
-  ctx.lineTo(cx + 18, bodyTop + 55);
-  ctx.fill();
-
-  // Head
-  ctx.fillStyle = skin;
-  ctx.beginPath();
-  ctx.ellipse(cx, bodyTop - 2, 14, 16, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Eyes
-  ctx.fillStyle = '#1a1a2e';
-  ctx.beginPath();
-  ctx.ellipse(cx - 5, bodyTop - 2, 2, 2.5, 0, 0, Math.PI * 2);
-  ctx.ellipse(cx + 5, bodyTop - 2, 2, 2.5, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Mouth
-  ctx.strokeStyle = '#c0392b';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.arc(cx, bodyTop + 5, 4, 0.1, Math.PI - 0.1);
-  ctx.stroke();
-
-  // Hair
-  ctx.fillStyle = hair;
-  const hs = state.hairStyle || 'long_straight';
-  // Top of hair
-  ctx.beginPath();
-  ctx.ellipse(cx, bodyTop - 8, 16, 14, 0, Math.PI, Math.PI * 2);
-  ctx.fill();
-  if (hs.includes('long')) {
-    ctx.beginPath();
-    ctx.moveTo(cx - 15, bodyTop - 5);
-    ctx.quadraticCurveTo(cx - 18, bodyTop + 20, cx - 14, bodyTop + 45);
-    ctx.lineTo(cx - 10, bodyTop + 45);
-    ctx.quadraticCurveTo(cx - 12, bodyTop + 15, cx - 11, bodyTop - 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(cx + 15, bodyTop - 5);
-    ctx.quadraticCurveTo(cx + 18, bodyTop + 20, cx + 14, bodyTop + 45);
-    ctx.lineTo(cx + 10, bodyTop + 45);
-    ctx.quadraticCurveTo(cx + 12, bodyTop + 15, cx + 11, bodyTop - 2);
-    ctx.fill();
-  } else if (hs === 'bun') {
-    ctx.beginPath();
-    ctx.ellipse(cx, bodyTop - 22, 8, 8, 0, 0, Math.PI * 2);
-    ctx.fill();
-  } else if (hs === 'mohawk') {
-    ctx.beginPath();
-    ctx.moveTo(cx - 4, bodyTop - 18);
-    ctx.lineTo(cx, bodyTop - 30);
-    ctx.lineTo(cx + 4, bodyTop - 18);
-    ctx.fill();
+  const layers = [
+    `char_a_${bp}_0bas_humn_${skinV}.png`,
+    `char_a_${bp}_1out_${outfitCode}_${outfitV}.png`,
+    `char_a_${bp}_4har_${hairCode}_${hairV}.png`,
+  ];
+  if (state.accessory === 'hat') {
+    layers.push(`char_a_${bp}_5hat_pfht_v01.png`);
   }
 
-  // Accessory
-  if (state.accessory === 'hat') {
-    ctx.fillStyle = '#2d1b4e';
-    ctx.beginPath();
-    ctx.moveTo(cx - 20, bodyTop - 14);
-    ctx.lineTo(cx, bodyTop - 40);
-    ctx.lineTo(cx + 20, bodyTop - 14);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(cx, bodyTop - 13, 22, 5, 0, 0, Math.PI * 2);
-    ctx.fill();
-  } else if (state.accessory === 'glasses') {
-    ctx.strokeStyle = '#d4a574';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(cx - 5, bodyTop - 2, 4, 0, Math.PI * 2);
-    ctx.arc(cx + 5, bodyTop - 2, 4, 0, Math.PI * 2);
-    ctx.moveTo(cx - 1, bodyTop - 2);
-    ctx.lineTo(cx + 1, bodyTop - 2);
-    ctx.stroke();
-  } else if (state.accessory === 'earrings') {
-    ctx.fillStyle = '#ffd700';
-    ctx.beginPath();
-    ctx.arc(cx - 14, bodyTop + 6, 2, 0, Math.PI * 2);
-    ctx.arc(cx + 14, bodyTop + 6, 2, 0, Math.PI * 2);
-    ctx.fill();
+  // Draw front-facing idle frame (row 0, col 0) from each layer
+  const scale = Math.min(canvas.width / SPRITE_FRAME, canvas.height / SPRITE_FRAME);
+  const dx = (canvas.width - SPRITE_FRAME * scale) / 2;
+  const dy = (canvas.height - SPRITE_FRAME * scale) / 2;
+
+  for (const file of layers) {
+    try {
+      const img = await loadSprite(SPRITE_PATH + file);
+      ctx.drawImage(img, 0, 0, SPRITE_FRAME, SPRITE_FRAME, dx, dy, SPRITE_FRAME * scale, SPRITE_FRAME * scale);
+    } catch(e) {
+      // Layer missing, skip silently
+    }
   }
 }
 
