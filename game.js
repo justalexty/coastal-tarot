@@ -469,7 +469,9 @@ function initTitle() {
   }
   $('#btn-new-game').addEventListener('click', () => {
     newGame();
-    showScreen('creation');
+    fullDeck = buildFullDeck();
+    showScreen('opening');
+    startOpening();
   });
   $('#btn-continue').addEventListener('click', () => {
     if (loadGame()) {
@@ -556,15 +558,14 @@ function initCreation() {
 // ============================================================
 const OPENING_LINES = [
   "The coastal train rattles along the cliffside tracks...",
-  "Through the salt-streaked window, you catch your first glimpse of Coralhaven.",
+  "Through the salt-streaked window, the ocean stretches out to the horizon.",
   "Pastel buildings tumble down to a harbor glittering in the afternoon sun.",
-  `You clutch your worn suitcase — everything you own fits inside it.`,
+  "You clutch your worn suitcase — everything you own fits inside it.",
   "Your old apprentice broom broke last week. The train was all you could afford.",
   "But you've got your tarot deck, your compact mirror, and $25 to your name.",
-  "The conductor calls out: \"Coralhaven Station! Last stop!\"",
+  "The conductor calls out: \"Last stop!\"",
   "You step onto the platform. The ocean breeze carries the scent of salt and possibility.",
-  "This is it. Your new life as a tarot reader starts now.",
-  "Time to open that compact mirror and get ready...",
+  "This is it. Your new life as a professional tarot reader starts now.",
 ];
 
 let openingLine = 0;
@@ -586,8 +587,8 @@ function typeNextChar() {
     setTimeout(() => {
       showScreen('game');
       renderGame();
-      showToast('Welcome to Coralhaven! 🔮');
-      addMessage('WitchNet', 'Welcome to Coralhaven! Remember: the Boardwalk is free to set up — no permit needed!');
+      showToast('Welcome! Open your compact mirror to get started 🔮');
+      addMessage('WitchNet', 'Welcome! The Boardwalk is free to set up — no permit needed. Open your compact mirror to customize your look!');
     }, 500);
     return;
   }
@@ -848,8 +849,198 @@ function showCompact() {
   renderMessages();
   renderCroneslist();
   renderSaveTab();
+  syncStylingTab();
   // Reset to messages tab
   switchCompactTab('messages');
+}
+
+// ============================================================
+// CHARACTER STYLING (in Compact Mirror)
+// ============================================================
+const SKIN_COLORS = {
+  pale: '#f5deb3', light: '#deb887', medium: '#c4956a',
+  tan: '#a0764a', dark: '#6b4226', deep: '#3b1e08'
+};
+const HAIR_COLORS_MAP = {
+  black: '#1a1a2e', brown: '#6b4226', blonde: '#d4a574', red: '#c0392b',
+  purple: '#8e44ad', blue: '#2980b9', green: '#27ae60', white: '#ecf0f1', pink: '#e84393'
+};
+
+function drawCharPreview() {
+  const canvas = $('#char-preview');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const skin = SKIN_COLORS[state.skinTone || 'pale'];
+  const hair = HAIR_COLORS_MAP[state.hairColor || 'black'];
+  const cx = w / 2, bodyTop = 45;
+
+  // Body
+  ctx.fillStyle = skin;
+  ctx.beginPath();
+  ctx.ellipse(cx, bodyTop + 30, 16, 22, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Outfit
+  const outfitColors = {
+    traditional: '#2d1b4e', modern_witch: '#1a1a2e', casual: '#5a7a8a',
+    traveler: '#8a6a3a', punk_witch: '#2a2a2a'
+  };
+  ctx.fillStyle = outfitColors[state.outfit || 'traditional'] || '#2d1b4e';
+  ctx.beginPath();
+  ctx.ellipse(cx, bodyTop + 35, 18, 28, 0, 0.2, Math.PI - 0.2);
+  ctx.fill();
+  // Skirt/legs
+  ctx.beginPath();
+  ctx.moveTo(cx - 18, bodyTop + 55);
+  ctx.lineTo(cx - 22, bodyTop + 80);
+  ctx.lineTo(cx + 22, bodyTop + 80);
+  ctx.lineTo(cx + 18, bodyTop + 55);
+  ctx.fill();
+
+  // Head
+  ctx.fillStyle = skin;
+  ctx.beginPath();
+  ctx.ellipse(cx, bodyTop - 2, 14, 16, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Eyes
+  ctx.fillStyle = '#1a1a2e';
+  ctx.beginPath();
+  ctx.ellipse(cx - 5, bodyTop - 2, 2, 2.5, 0, 0, Math.PI * 2);
+  ctx.ellipse(cx + 5, bodyTop - 2, 2, 2.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Mouth
+  ctx.strokeStyle = '#c0392b';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(cx, bodyTop + 5, 4, 0.1, Math.PI - 0.1);
+  ctx.stroke();
+
+  // Hair
+  ctx.fillStyle = hair;
+  const hs = state.hairStyle || 'long_straight';
+  // Top of hair
+  ctx.beginPath();
+  ctx.ellipse(cx, bodyTop - 8, 16, 14, 0, Math.PI, Math.PI * 2);
+  ctx.fill();
+  if (hs.includes('long')) {
+    ctx.beginPath();
+    ctx.moveTo(cx - 15, bodyTop - 5);
+    ctx.quadraticCurveTo(cx - 18, bodyTop + 20, cx - 14, bodyTop + 45);
+    ctx.lineTo(cx - 10, bodyTop + 45);
+    ctx.quadraticCurveTo(cx - 12, bodyTop + 15, cx - 11, bodyTop - 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx + 15, bodyTop - 5);
+    ctx.quadraticCurveTo(cx + 18, bodyTop + 20, cx + 14, bodyTop + 45);
+    ctx.lineTo(cx + 10, bodyTop + 45);
+    ctx.quadraticCurveTo(cx + 12, bodyTop + 15, cx + 11, bodyTop - 2);
+    ctx.fill();
+  } else if (hs === 'bun') {
+    ctx.beginPath();
+    ctx.ellipse(cx, bodyTop - 22, 8, 8, 0, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (hs === 'mohawk') {
+    ctx.beginPath();
+    ctx.moveTo(cx - 4, bodyTop - 18);
+    ctx.lineTo(cx, bodyTop - 30);
+    ctx.lineTo(cx + 4, bodyTop - 18);
+    ctx.fill();
+  }
+
+  // Accessory
+  if (state.accessory === 'hat') {
+    ctx.fillStyle = '#2d1b4e';
+    ctx.beginPath();
+    ctx.moveTo(cx - 20, bodyTop - 14);
+    ctx.lineTo(cx, bodyTop - 40);
+    ctx.lineTo(cx + 20, bodyTop - 14);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(cx, bodyTop - 13, 22, 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (state.accessory === 'glasses') {
+    ctx.strokeStyle = '#d4a574';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx - 5, bodyTop - 2, 4, 0, Math.PI * 2);
+    ctx.arc(cx + 5, bodyTop - 2, 4, 0, Math.PI * 2);
+    ctx.moveTo(cx - 1, bodyTop - 2);
+    ctx.lineTo(cx + 1, bodyTop - 2);
+    ctx.stroke();
+  } else if (state.accessory === 'earrings') {
+    ctx.fillStyle = '#ffd700';
+    ctx.beginPath();
+    ctx.arc(cx - 14, bodyTop + 6, 2, 0, Math.PI * 2);
+    ctx.arc(cx + 14, bodyTop + 6, 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function syncStylingTab() {
+  const n = $('#compact-name');
+  if (n) n.value = state.name || '';
+  const p = $('#compact-pronouns');
+  if (p) p.value = state.pronouns || 'she';
+  const b = $('#compact-body');
+  if (b) b.value = state.bodyType || 'feminine';
+  const hs = $('#compact-hairstyle');
+  if (hs) hs.value = state.hairStyle || 'long_straight';
+  const hc = $('#compact-haircolor');
+  if (hc) hc.value = state.hairColor || 'black';
+  const o = $('#compact-outfit');
+  if (o) o.value = state.outfit || 'traditional';
+  const a = $('#compact-accessory');
+  if (a) a.value = state.accessory || 'none';
+  // Skin dots
+  $$('.skin-dot').forEach(d => d.classList.toggle('selected', d.dataset.skin === (state.skinTone || 'pale')));
+  drawCharPreview();
+}
+
+function initStylingTab() {
+  // Skin tone dots
+  $$('.skin-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      $$('.skin-dot').forEach(d => d.classList.remove('selected'));
+      dot.classList.add('selected');
+      state.skinTone = dot.dataset.skin;
+      drawCharPreview();
+    });
+  });
+
+  // Live preview on any change
+  ['compact-pronouns','compact-body','compact-hairstyle','compact-haircolor','compact-outfit','compact-accessory'].forEach(id => {
+    const el = $(`#${id}`);
+    if (el) el.addEventListener('change', () => {
+      state.pronouns = $('#compact-pronouns').value;
+      state.bodyType = $('#compact-body').value;
+      state.hairStyle = $('#compact-hairstyle').value;
+      state.hairColor = $('#compact-haircolor').value;
+      state.outfit = $('#compact-outfit').value;
+      state.accessory = $('#compact-accessory').value;
+      drawCharPreview();
+    });
+  });
+
+  // Save button
+  const saveBtn = $('#btn-save-appearance');
+  if (saveBtn) saveBtn.addEventListener('click', () => {
+    const name = $('#compact-name').value.trim();
+    if (name) state.name = name;
+    state.pronouns = $('#compact-pronouns').value;
+    state.bodyType = $('#compact-body').value;
+    state.hairStyle = $('#compact-hairstyle').value;
+    state.hairColor = $('#compact-haircolor').value;
+    state.outfit = $('#compact-outfit').value;
+    state.accessory = $('#compact-accessory').value;
+    saveGame();
+    showToast('Appearance saved! ✨');
+    renderGame();
+  });
 }
 
 function switchCompactTab(tab) {
@@ -895,7 +1086,7 @@ function maybeAddMessage() {
                .replace(/\{s\/\}/g, state.pronouns === 'they' ? '' : 's')
                .replace(/\{need\}/g, state.pronouns === 'they' ? 'need' : 'needs')
                .replace(/\{want\}/g, state.pronouns === 'they' ? 'want' : 'wants');
-      const senders = ['WitchNet', 'LocalWitch42', 'CoralhavenCoven', 'BroomShare', 'FriendlyHex'];
+      const senders = ['WitchNet', 'LocalWitch42', 'CoastalCoven', 'BroomShare', 'FriendlyHex'];
       addMessage(senders[Math.floor(Math.random() * senders.length)], msg);
     }
   }
@@ -1143,6 +1334,9 @@ function initEvents() {
     renderSaveTab();
     showToast('Game saved! ✨');
   });
+
+  // Compact mirror styling
+  initStylingTab();
 
   // Finish reading
   $('#btn-finish-reading').addEventListener('click', finishReading);

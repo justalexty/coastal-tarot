@@ -146,7 +146,14 @@
     <!-- ===== OPENING SEQUENCE ===== -->
     <div id="screen-opening" class="screen">
       <div class="opening-bg">
-        <div class="train-window"></div>
+        <div class="train-window">
+          <div class="train-sun"></div>
+          <div class="train-scenery">
+            <div class="scenery-layer scenery-hills"></div>
+            <div class="scenery-layer scenery-buildings"></div>
+          </div>
+        </div>
+        <div class="train-frame"></div>
         <div id="opening-dialogue" class="dialogue-box">
           <p id="opening-text"></p>
           <span class="continue-hint">tap to continue</span>
@@ -226,7 +233,92 @@
               <p id="cl-empty" style="display:none">No brooms available right now.<br>Check back soon!</p>
             </div>
             <div id="tab-styling" class="tab-content">
-              <p class="coming-soon">Styling available from character creation.<br>More options coming soon!</p>
+              <div class="styling-preview">
+                <canvas id="char-preview" width="96" height="128"></canvas>
+              </div>
+              <div class="styling-form">
+                <label class="style-label">Name:
+                  <input type="text" id="compact-name" placeholder="Your witch name..." maxlength="20">
+                </label>
+                <div class="style-row">
+                  <label class="style-label">Pronouns:
+                    <select id="compact-pronouns">
+                      <option value="she">She/Her</option>
+                      <option value="he">He/Him</option>
+                      <option value="they">They/Them</option>
+                    </select>
+                  </label>
+                  <label class="style-label">Body:
+                    <select id="compact-body">
+                      <option value="feminine">Feminine</option>
+                      <option value="androgynous">Androgynous</option>
+                      <option value="masculine">Masculine</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="style-row">
+                  <label class="style-label">Hair:
+                    <select id="compact-hairstyle">
+                      <option value="long_straight">Long Straight</option>
+                      <option value="long_wavy">Long Wavy</option>
+                      <option value="short_straight">Short Straight</option>
+                      <option value="short_wavy">Short Wavy</option>
+                      <option value="braids">Braids</option>
+                      <option value="bun">Bun</option>
+                      <option value="ponytail">Ponytail</option>
+                      <option value="buzzcut">Buzzcut</option>
+                      <option value="mohawk">Mohawk</option>
+                    </select>
+                  </label>
+                  <label class="style-label">Color:
+                    <select id="compact-haircolor">
+                      <option value="black">Black</option>
+                      <option value="brown">Brown</option>
+                      <option value="blonde">Blonde</option>
+                      <option value="red">Red</option>
+                      <option value="purple">Purple</option>
+                      <option value="blue">Blue</option>
+                      <option value="green">Green</option>
+                      <option value="white">White</option>
+                      <option value="pink">Pink</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="style-row">
+                  <label class="style-label">Skin:
+                    <div class="compact-skin-tones">
+                      <button class="skin-dot selected" data-skin="pale" style="background:#f5deb3"></button>
+                      <button class="skin-dot" data-skin="light" style="background:#deb887"></button>
+                      <button class="skin-dot" data-skin="medium" style="background:#c4956a"></button>
+                      <button class="skin-dot" data-skin="tan" style="background:#a0764a"></button>
+                      <button class="skin-dot" data-skin="dark" style="background:#6b4226"></button>
+                      <button class="skin-dot" data-skin="deep" style="background:#3b1e08"></button>
+                    </div>
+                  </label>
+                </div>
+                <div class="style-row">
+                  <label class="style-label">Outfit:
+                    <select id="compact-outfit">
+                      <option value="traditional">Traditional</option>
+                      <option value="modern_witch">Modern Witch</option>
+                      <option value="casual">Casual</option>
+                      <option value="traveler">Traveler</option>
+                      <option value="punk_witch">Punk Witch</option>
+                    </select>
+                  </label>
+                  <label class="style-label">Accessory:
+                    <select id="compact-accessory">
+                      <option value="none">None</option>
+                      <option value="glasses">Glasses</option>
+                      <option value="hat">Hat</option>
+                      <option value="scarf">Scarf</option>
+                      <option value="earrings">Earrings</option>
+                      <option value="necklace">Necklace</option>
+                    </select>
+                  </label>
+                </div>
+                <button class="magic-btn small-btn" id="btn-save-appearance">Save Changes</button>
+              </div>
             </div>
             <div id="tab-save" class="tab-content">
               <button class="magic-btn" id="btn-save-game">Save Game</button>
